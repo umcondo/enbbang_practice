@@ -1,6 +1,7 @@
 import { Route, Routes, Navigate } from "react-router";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
+import KakaoToken from "./pages/KakaoToken";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/auth/kakao/callback" element={<KakaoToken />} />
       </Routes>
     </div>
   );

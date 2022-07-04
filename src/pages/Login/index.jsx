@@ -34,8 +34,8 @@ const MainContainer = styled.div`
 `;
 
 const Login = () => {
-  const KAKAO_AUTH_URL =
-    "https://developers.kakao.com/docs/latest/ko/kakaologin/common";
+  const KAKAO_AUTH_URL = "https://hee-backend.shop:7179/auth/kakao";
+
   return (
     <MainContainer>
       <a href={KAKAO_AUTH_URL}>
