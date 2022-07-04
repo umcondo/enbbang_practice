@@ -17,11 +17,15 @@ const Join = () => {
     e.preventDefault();
     setNickname("");
     alert("제출되었습니다");
+
+    // post로 제출 access 토큰 필수
+    // /user/profile/add, {name, nickname}
   };
 
   const doubleCheck = () => {
     // e.stopPropagation();
     alert("사용할 수 있는 별명입니다");
+    // get방식 , API : /user/duplicate/nickname, query : nickname
   };
 
   return (
