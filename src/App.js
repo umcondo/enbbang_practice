@@ -14,7 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />
         <Route path="/main" element={<Main />} />
-        <Route path="/auth/kakao/callback" element={<KakaoToken />} />
+        <Route path="/oauth/kakao/callback" element={<KakaoToken />} />
       </Routes>
     </div>
   );
