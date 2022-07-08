@@ -33,10 +33,10 @@ const MainContainer = styled.div`
   }
 `;
 
-// http://172.30.1.55:7979/api-docs/
+// http://172.30.1.41:7979/api-docs/
 
 const Login = () => {
-  const KAKAO_AUTH_URL = "http://172.30.1.55:7979/auth/kakao";
+  const KAKAO_AUTH_URL = "http://172.30.1.41:7979/auth/kakao";
 
   return (
     <MainContainer>
