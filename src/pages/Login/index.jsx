@@ -1,5 +1,8 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
+import useSWR from "swr";
+import getAccessData from "../../utils/getAccessData";
 
 const MainContainer = styled.div`
   height: 100vh;
@@ -37,6 +40,13 @@ const MainContainer = styled.div`
 
 const Login = () => {
   const KAKAO_AUTH_URL = "http://172.30.1.41:7979/auth/kakao";
+
+  const { data: userAccessData } = useSWR("sessionStorage", getAccessData);
+
+  if (userAccessData) {
+    return <Navigate to="/main" replace={false} />;
+  }
+  // console.log(userAccessData);
 
   return (
     <MainContainer>

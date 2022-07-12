@@ -8,25 +8,33 @@ import {
 const KakaoToken = () => {
   const currrentUrlQuery = window.location.search; // 현재 url query
 
-  // const { data: userAccessData, mutate: userAccessMutate } =
-  //   useKakaoCallbackDataSwr();
-  const { data: userAccessData2, mutate: userAccessMutate2 } =
-    useKakaoCallbackDataSwr2();
+  // SWR이용한 전역값 저장. 새로고침 시 사라져서 세션스토리지에 저장하는 식으로 변경
+  // const { data: userAccessData2, mutate: userAccessMutate2 } =
+  //   useKakaoCallbackDataSwr2();
 
   // useEffect(() => {
-  //   userAccessMutate(currrentUrlQuery);
-  // }, [userAccessMutate, currrentUrlQuery]);
+  //   userAccessMutate2(currrentUrlQuery);
+  // }, [userAccessMutate2, currrentUrlQuery]);
 
-  useEffect(() => {
-    userAccessMutate2(currrentUrlQuery);
-  }, [userAccessMutate2, currrentUrlQuery]);
+  const params = new URLSearchParams(currrentUrlQuery); // URLSearchParams 객체
+  const userAccessDataJson = params.get("user"); // user 인스턴스 - json type data
+  const userAccessData = JSON.parse(userAccessDataJson); // user 객체
 
-  // useEffect(() => {
-  //   console.log({ UserAccessData });
-  // }, [UserAccessData]);
+  // Access data
+  const statusCode = userAccessData["statusCode"];
+  const message = userAccessData["message"];
+  const verify = userAccessData["verify"];
+  const accessToken = userAccessData["accessToken"];
+  const refreshToken = userAccessData["refreshToken"];
 
-  if (userAccessData2) {
-    // return navigate("/join", { replace: false });
+  // sessionStorage 저장
+  window.sessionStorage.setItem("statusCode", statusCode);
+  window.sessionStorage.setItem("message", message);
+  window.sessionStorage.setItem("verify", verify);
+  window.sessionStorage.setItem("accessToken", accessToken);
+  window.sessionStorage.setItem("refreshToken", refreshToken);
+
+  if (statusCode) {
     return <Navigate to="/join" replace={false} />;
   }
   return <div>카카오토큰받자</div>;

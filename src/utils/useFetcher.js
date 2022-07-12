@@ -3,11 +3,13 @@ import { useKakaoCallbackDataSwr2 } from "../hooks/useKakaoCallbackDataSwr";
 
 const useFetcher = (url) => {
   const { data: userAccessData } = useKakaoCallbackDataSwr2();
-  axios.get(url, {
-    headers: {
-      Authorization: `Bearer ${userAccessData.accessToken}`,
-    },
-  });
+  return axios
+    .get(url, {
+      headers: {
+        Authorization: `Bearer ${userAccessData.accessToken}`,
+      },
+    })
+    .then((response) => response.data);
 };
 
 export default useFetcher;

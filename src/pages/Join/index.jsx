@@ -2,13 +2,10 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Navigate } from "react-router";
 import styled from "styled-components";
-import {
-  useKakaoCallbackDataSwr,
-  useKakaoCallbackDataSwr2,
-} from "../../hooks/useKakaoCallbackDataSwr";
 import useInput from "./../../hooks/useInput";
 import useSWR from "swr";
 import useFetcher from "../../utils/useFetcher";
+import getAccessData from "../../utils/getAccessData";
 
 const MainContainer = styled.div`
   height: 100vh;
@@ -21,15 +18,30 @@ const MainContainer = styled.div`
 
 const Join = () => {
   // 새로고침 시 마다 userAccessData 사라지니 아예 로컬,세션 스토리지에 저장?
-  const { data: userAccessData } = useKakaoCallbackDataSwr2();
-  const { data: useData } = useSWR(
+  // 세션스토리지에서 유저 데이터 불러옴
+  const { data: userAccessData } = useSWR("sessionStorage", getAccessData);
+
+  useEffect(() => {
+    console.log(userAccessData);
+  }, [userAccessData]);
+
+  const { data: userData } = useSWR(
     "http://172.30.1.41:7979/user/profile/select",
     useFetcher
   );
 
-  console.log(useData);
+  // console.log(userAccessData.accessToken);
+  // axios
+  //   .get("http://172.30.1.41:7979/user/profile/select", {
+  //     headers: {
+  //       Authorization: `Bearer ${userAccessData.accessToken}`,
+  //     },
+  //   })
+  //   .then((response) => console.log(response.data));
+
   const [nickname, setNickname, onChangeNickname] = useInput("");
   const [isNickname, setIsNickname] = useInput(false);
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -51,7 +63,7 @@ const Join = () => {
       .then((response) => {
         console.log(response);
         alert("회원가입되었습니다");
-        return <Navigate to="/main" replace={false} />;
+        // return <Navigate to="/main" replace={false} />;
       })
       .catch((error) => {
         console.log(error);
@@ -59,10 +71,6 @@ const Join = () => {
 
     setNickname("");
   };
-
-  useEffect(() => {
-    console.log(userAccessData);
-  }, [userAccessData]);
 
   const doubleCheck = () => {
     // e.stopPropagation();
@@ -85,10 +93,13 @@ const Join = () => {
       });
   };
 
+  if (!userAccessData) {
+    return <div>로딩중</div>;
+  }
   return (
     <MainContainer>
       <ol>
-        {Object?.entries(userAccessData).map((elm, idx) => (
+        {Object.entries(userAccessData).map((elm, idx) => (
           <li key={idx}>
             {elm[0]}:{elm[1]}
           </li>
