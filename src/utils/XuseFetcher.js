@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useKakaoCallbackDataSwr2 } from "../hooks/useKakaoCallbackDataSwr";
+import useSWR from "swr";
+import getAccessData from "./getAccessData";
 
 const useFetcher = (url) => {
-  const { data: userAccessData } = useKakaoCallbackDataSwr2();
+  const { data: userAccessData } = useSWR("sessionStorage", getAccessData);
   return axios
     .get(url, {
       headers: {

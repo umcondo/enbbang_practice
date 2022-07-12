@@ -43,8 +43,8 @@ const Login = () => {
 
   const { data: userAccessData } = useSWR("sessionStorage", getAccessData);
 
-  if (userAccessData) {
-    return <Navigate to="/main" replace={false} />;
+  if (userAccessData?.accessToken) {
+    return <Navigate to="/main" replace={true} />;
   }
   // console.log(userAccessData);
 

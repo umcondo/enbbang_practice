@@ -1,9 +1,5 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router";
-import {
-  useKakaoCallbackDataSwr,
-  useKakaoCallbackDataSwr2,
-} from "../../hooks/useKakaoCallbackDataSwr";
 
 const KakaoToken = () => {
   const currrentUrlQuery = window.location.search; // 현재 url query
@@ -35,7 +31,7 @@ const KakaoToken = () => {
   window.sessionStorage.setItem("refreshToken", refreshToken);
 
   if (statusCode) {
-    return <Navigate to="/join" replace={false} />;
+    return <Navigate to="/join" replace={true} />;
   }
   return <div>카카오토큰받자</div>;
 };
