@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Navigate } from "react-router";
 import styled from "styled-components";
 import useSWR from "swr";
@@ -23,18 +23,18 @@ const Main = () => {
   );
 
   // 유저데이터
-  const {
-    data: userData,
-    mutate: userMutate,
-    error,
-  } = useSWR("http://172.30.1.41:7979/user/profile/select", fetcherAccessToken);
+  const { data: userData, mutate: userMutate } = useSWR(
+    "http://172.30.1.41:7979/user/profile/select",
+    fetcherAccessToken
+  );
 
   const [logout, setLogout] = useState(true);
 
-  console.log(userAccessData, userData);
-
-  // 로그아웃
-  const Logout = () => {
+  /**
+   * 로그아웃
+   * 성공 시 세션스토리지 비우고 swr데이터(유저, 세션스토리지 데이터) 초기화한다.
+   */
+  const Logout = useCallback(() => {
     setLogout(false);
     axios
       .get("http://172.30.1.41:7979/user/logout", {
@@ -53,27 +53,14 @@ const Main = () => {
       })
       .catch((error) => {
         console.log(error);
-        userMutate();
-        // // refresh토큰 재발급
-        // axios
-        //   .get(
-        //     `http://172.30.1.41:7979/auth/token/reissuance/?refreshToken=${userAccessData.refreshToken}`
-        //   )
-        //   .then((response) => {
-        //     console.log(response.data.accessToken);
-        //     const accessToken = response.data.accessToken;
-        //     if (accessToken) {
-        //       window.sessionStorage.setItem("accessToken", accessToken);
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
       });
-  };
+  }, [userAccessData?.accessToken, setLogout, userAccessMutate, userMutate]);
 
-  // 회원탈퇴
-  const withdrawal = () => {
+  /**
+   * 회원탈퇴
+   * 성공 시 세션스토리지 비우고 swr데이터(유저, 세션스토리지 데이터) 초기화한다.
+   */
+  const withdrawal = useCallback(() => {
     axios
       .delete("http://172.30.1.41:7979/user/withdrawal", {
         headers: {
@@ -90,7 +77,7 @@ const Main = () => {
       .catch((error) => {
         console.log(error);
       });
-  };
+  }, [userAccessMutate, userMutate, userAccessData?.accessToken]);
 
   // swr로 데이터를 불러오는 중에는 로딩중 창을 띄운다.
   if (userAccessData === undefined || userData === undefined) {

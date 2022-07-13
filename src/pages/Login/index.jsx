@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import styled from "styled-components";
 import useSWR from "swr";
+import fetcherAccessToken from "../../utils/fetcherAccessToken";
 import getAccessData from "../../utils/getAccessData";
 
 const MainContainer = styled.div`
@@ -41,12 +42,27 @@ const MainContainer = styled.div`
 const Login = () => {
   const KAKAO_AUTH_URL = "http://172.30.1.41:7979/auth/kakao";
 
-  const { data: userAccessData } = useSWR("sessionStorage", getAccessData);
+  const { data: userData } = useSWR(
+    "http://172.30.1.41:7979/user/profile/select",
+    fetcherAccessToken
+  );
 
-  if (userAccessData?.accessToken) {
+  if (userData === undefined) {
+    return <div>로딩중</div>;
+  }
+
+  /*
+  verify === Y, 즉 추가 회원정보가 있으면 main으로
+  verify === N, 가입은 되었지만 추가회원정보가 없으면 join으로
+  가입이 안되어있다면 그냥 login페이지를 보여줌
+  */
+
+  if (window.sessionStorage.verify === "Y") {
     return <Navigate to="/main" replace={true} />;
   }
-  // console.log(userAccessData);
+  if (window.sessionStorage.verify === "N") {
+    return <Navigate to="/join" replace={true} />;
+  }
 
   return (
     <MainContainer>

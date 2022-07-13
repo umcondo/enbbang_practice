@@ -20,13 +20,9 @@ const MainContainer = styled.div`
   새로고침 시 마다 userAccessData 사라지니 아예 로컬,세션 스토리지에 저장?
   세션스토리지에서 유저 데이터 불러옴
   지속적으로 유저데이터를 받아와야하므로 swr를 이용
-  */
+*/
 const Join = () => {
   const { data: userAccessData } = useSWR("sessionStorage", getAccessData);
-
-  useEffect(() => {
-    console.log(userAccessData);
-  }, [userAccessData]);
 
   const {
     data: userData,
@@ -37,49 +33,55 @@ const Join = () => {
   // 닉네임
   const [nickname, setNickname, onChangeNickname] = useInput("");
   // 닉네임 중복체크 메시지
-  const [isNicknameDoubleCheck, setIsNicknameDoubleCheck] = useState(false);
+  const [isNicknameDoubleCheck, setIsNicknameDoubleCheck] = useState("");
   // 회원가입 에러 메시지
   const [joinError, setJoinError] = useState("");
 
   // 회원가입
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    // post로 제출 access 토큰 필수
-    // /user/profile/add, {name, nickname}
-
-    setJoinError("");
-    axios
-      .post(
-        "http://172.30.1.41:7979/user/profile/add",
-        {
-          name: "empty",
-          nickname,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${userAccessData.accessToken}`,
+      setJoinError("");
+      axios
+        .post(
+          "http://172.30.1.41:7979/user/profile/add",
+          {
+            name: "empty", // name은 필요없지만 현재 API에서 필수값이라
+            nickname,
           },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        setJoinError(response.data.message);
-        userMutate();
-        // alert("회원가입되었습니다");
-        // return <Navigate to="/main" replace={false} />;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          {
+            headers: {
+              Authorization: `Bearer ${userAccessData.accessToken}`,
+            },
+          }
+        )
+        .then((response) => {
+          // console.log(response);
+          setJoinError(response.data.message);
+          userMutate();
+          alert("회원가입되었습니다");
+        })
+        .catch((error) => {
+          // console.log(error);
+          setJoinError(error.response?.data.message);
+        });
 
-    setNickname("");
-  };
+      setNickname("");
+    },
+    [
+      nickname,
+      userAccessData?.accessToken,
+      userMutate,
+      setJoinError,
+      setNickname,
+    ]
+  );
 
   // 중복체크
-  const doubleCheck = () => {
+  const doubleCheck = useCallback(() => {
     // get방식 , API : /user/duplicate/nickname, query : nickname
-    // setIsNicknameDoubleCheck(false); //
+    // setIsNicknameDoubleCheck("");
     axios
       .get("http://172.30.1.41:7979/user/duplicate/nickname", {
         params: { nickname: nickname },
@@ -87,21 +89,24 @@ const Join = () => {
       .then((response) => {
         console.log(response);
         response.data.duplicate === "true"
-          ? setIsNicknameDoubleCheck(true)
-          : setIsNicknameDoubleCheck(false);
+          ? setIsNicknameDoubleCheck("중복입니다")
+          : setIsNicknameDoubleCheck("사용가능한 닉네임입니다");
       })
       .catch((error) => {
         console.log(error);
       });
-  };
+  }, [nickname]);
 
   if (userAccessData === undefined || userData === undefined) {
     return <div>로딩중</div>;
   }
 
-  // console.log(userData);
   // 토큰은 있지만 유저 아이디가 없어서 http 통신은 200으로 성공했지만 내부 statuscode는 400이다.
   if (!(userData.statusCode === 400)) {
+    return <Navigate to="/main" replace={true} />;
+  }
+
+  if (window.sessionStorage.verify === "Y") {
     return <Navigate to="/main" replace={true} />;
   }
 
@@ -133,11 +138,7 @@ const Join = () => {
         {joinError && <div>{joinError}</div>}
       </form>
       <button onClick={doubleCheck}>중복확인</button>
-      {isNicknameDoubleCheck ? (
-        <div>중복입니다!</div>
-      ) : (
-        <div>중복이 아닙니다</div>
-      )}
+      {isNicknameDoubleCheck}
     </MainContainer>
   );
 };
