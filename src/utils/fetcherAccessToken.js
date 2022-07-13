@@ -7,6 +7,7 @@ const fetcherAccessToken = (url) =>
         Authorization: `Bearer ${window.sessionStorage.accessToken}`,
       },
     })
-    .then((response) => response.data);
+    .then((response) => response.data)
+    .catch((error) => false);
 
 export default fetcherAccessToken;

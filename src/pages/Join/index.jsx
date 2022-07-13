@@ -30,7 +30,7 @@ const Join = () => {
 
   const {
     data: userData,
-    mutate,
+    mutate: userMutate,
     error,
   } = useSWR("http://172.30.1.41:7979/user/profile/select", fetcherAccessToken);
 
@@ -65,6 +65,7 @@ const Join = () => {
       .then((response) => {
         console.log(response);
         setJoinError(response.data.message);
+        userMutate();
         // alert("회원가입되었습니다");
         // return <Navigate to="/main" replace={false} />;
       })
@@ -94,12 +95,16 @@ const Join = () => {
       });
   };
 
-  if (!userAccessData || !userData) {
+  if (userAccessData === undefined || userData === undefined) {
     return <div>로딩중</div>;
   }
-  if (userData) {
+
+  // console.log(userData);
+  // 토큰은 있지만 유저 아이디가 없어서 http 통신은 200으로 성공했지만 내부 statuscode는 400이다.
+  if (!(userData.statusCode === 400)) {
     return <Navigate to="/main" replace={true} />;
   }
+
   return (
     <MainContainer>
       <ol>
@@ -109,7 +114,7 @@ const Join = () => {
           </li>
         ))}
       </ol>
-      <ol>
+      {/* <ol>
         {Object.entries(userData.data).map((elm, idx) => {
           return (
             <li key={idx}>
@@ -117,7 +122,7 @@ const Join = () => {
             </li>
           );
         })}
-      </ol>
+      </ol> */}
       <h1>회원가입</h1>
       <form onSubmit={onSubmit}>
         <label htmlFor="nickname">사용할 닉네임 :&nbsp;</label>

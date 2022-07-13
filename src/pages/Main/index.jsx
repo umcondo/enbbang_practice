@@ -16,18 +16,24 @@ const MainContainer = styled.div`
 `;
 
 const Main = () => {
+  // 세션스토리지
   const { data: userAccessData, mutate: userAccessMutate } = useSWR(
     "sessionStorage",
     getAccessData
   );
 
+  // 유저데이터
   const {
     data: userData,
-    mutate,
+    mutate: userMutate,
     error,
   } = useSWR("http://172.30.1.41:7979/user/profile/select", fetcherAccessToken);
 
   const [logout, setLogout] = useState(true);
+
+  console.log(userAccessData, userData);
+
+  // 로그아웃
   const Logout = () => {
     setLogout(false);
     axios
@@ -39,35 +45,62 @@ const Main = () => {
       .then((response) => {
         console.log(response.data);
         // setLogout(true);
-        userAccessMutate(false, false);
+
+        // 로그아웃 후 세션스토리지 비우고 swr데이터들을 초기화한다.
         window.sessionStorage.clear();
+        userAccessMutate();
+        userMutate();
       })
       .catch((error) => {
         console.log(error);
-        // refresh토큰 재발급
-        axios
-          .get(
-            `http://172.30.1.41:7979/auth/token/reissuance/?refreshToken=${userAccessData.refreshToken}`
-          )
-          .then((response) => {
-            console.log(response.data.accessToken);
-            const accessToken = response.data.accessToken;
-            if (accessToken) {
-              window.sessionStorage.setItem("accessToken", accessToken);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        userMutate();
+        // // refresh토큰 재발급
+        // axios
+        //   .get(
+        //     `http://172.30.1.41:7979/auth/token/reissuance/?refreshToken=${userAccessData.refreshToken}`
+        //   )
+        //   .then((response) => {
+        //     console.log(response.data.accessToken);
+        //     const accessToken = response.data.accessToken;
+        //     if (accessToken) {
+        //       window.sessionStorage.setItem("accessToken", accessToken);
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
       });
   };
 
-  if (!userAccessData) {
+  // 회원탈퇴
+  const withdrawal = () => {
+    axios
+      .delete("http://172.30.1.41:7979/user/withdrawal", {
+        headers: {
+          Authorization: `Bearer ${userAccessData.accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        // 탈퇴 후 세션스토리지 비우고 swr데이터들을 초기화한다.
+        window.sessionStorage.clear();
+        userAccessMutate();
+        userMutate();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // swr로 데이터를 불러오는 중에는 로딩중 창을 띄운다.
+  if (userAccessData === undefined || userData === undefined) {
+    return <div>로딩중</div>;
+  }
+
+  // 유저데이터가 없으면 첫 페이지로 이동
+  if (!userData) {
     return <Navigate to="/" replace={true} />;
   }
-  // if (!userData) {
-  //   return <Navigate to="/" replace={true} />;
-  // }
 
   return (
     <MainContainer>
@@ -90,6 +123,7 @@ const Main = () => {
       메인페이지
       <button onClick={Logout}>로그아웃</button>
       {logout ? <div>로그인 중</div> : <div>로그인해라</div>}
+      <button onClick={withdrawal}>회원탈퇴</button>
     </MainContainer>
   );
 };
