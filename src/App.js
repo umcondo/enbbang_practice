@@ -4,6 +4,7 @@ import Join from "./pages/Join";
 import KakaoToken from "./pages/KakaoToken";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
+import MenuTest from "./pages/MenuTest";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/join" element={<Join />} />
         <Route path="/main" element={<Main />} />
+        <Route path="/main2" element={<MenuTest />} />
         <Route path="/oauth/kakao/callback" element={<KakaoToken />} />
       </Routes>
     </div>
