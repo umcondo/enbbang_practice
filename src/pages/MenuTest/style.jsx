@@ -52,6 +52,7 @@ export const FindTown = styled.div`
   .FindTown_selectBox {
     margin-left: 16px;
     margin-right: 14px;
+    cursor: pointer;
   }
   .FindTown_selectBox_pointer {
     width: 12px;
@@ -61,12 +62,14 @@ export const FindTown = styled.div`
   .FindTown_search {
     width: 17.49px;
     height: 17.49px;
+    cursor: pointer;
   }
   .FindTown_alarm {
     width: 16px;
     height: 19.5px;
     margin-right: 20px;
     margin-left: 31.51px;
+    cursor: pointer;
   }
 `;
 
@@ -151,11 +154,10 @@ export const SortBar = styled.div`
   gap: 9px;
   margin-left: 20px;
   margin-top: 30px;
+
   img {
     width: 16px;
     height: 6px;
-  }
-  img:hover {
     cursor: pointer;
   }
   span {
@@ -164,13 +166,114 @@ export const SortBar = styled.div`
     font-weight: 400;
     font-size: 12px;
     line-height: 18px;
+    cursor: pointer;
   }
 `;
 
 export const MainContent = styled.div`
-  background-color: #ececec;
-  height: 400px;
   margin-top: 10px;
+`;
+
+export const MainItemsContainer = styled.div`
+  padding-left: 16px;
+  padding-right: 16px;
+  border-bottom: 4px solid #eeeeee;
+  padding-bottom: 5px;
+
+  .items_header {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .items_header .items_tag_wrapper {
+    display: flex;
+  }
+  .items_header .items_tag_wrapper .items_tag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #b3e5fc;
+    border-radius: 4px;
+    height: 22px;
+
+    padding: 3px 9px 1px 8px;
+
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    margin-right: 4px;
+  }
+  .items_header .items_detail {
+    height: 10.67px;
+    width: 2.67px;
+    cursor: pointer;
+  }
+
+  .items_content_wrapper {
+    display: flex;
+    gap: 16px;
+  }
+  .items_img_wrapper img {
+    width: 96px;
+    height: 96px;
+  }
+  .items_content_wrapper .items_img_wrapper {
+    position: relative;
+  }
+  .items_content_wrapper .items_heart {
+    position: absolute;
+    bottom: 11.04%;
+    left: 8.33%;
+    width: 16.67px;
+    height: 15.29px;
+    cursor: pointer;
+  }
+  .items_content_wrapper .items_text_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+  }
+  .items_text_wrapper h1 {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .items_text_wrapper p {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: -0.25px;
+
+    color: #9e9e9e;
+  }
+  .items_text_wrapper .items_footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .items_text_wrapper .items_footer .items_participants img {
+    width: 16.67px;
+  }
+  .items_text_wrapper .items_footer .items_participants span {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    margin-left: 3px;
+  }
+  .items_text_wrapper .items_deadline {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+
+    text-align: right;
+    letter-spacing: -0.25px;
+
+    color: #9e9e9e;
+  }
 `;
 
 export const MainButton = styled.button`

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRef } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 
@@ -9,6 +10,7 @@ import {
   MainButton,
   MainContaier,
   MainContent,
+  MainItemsContainer,
   SortBar,
 } from "./style";
 
@@ -35,6 +37,98 @@ const FindTag = () => {
   );
 };
 
+const mainItemsData = [
+  {
+    itemId: 0,
+    itemsTag: ["같이 사요 🛍️", "배달비 🛵"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "마포구청역 근처 같이 치킨시켜 드실 분?",
+    itemsTownLocation: "동네이웃1 성산 제1동",
+    itemsParticipants: "1/3",
+    itemsDeadline: "2022/06/30 일까지",
+  },
+  {
+    itemId: 1,
+    itemsTag: ["같이 사요 🛍️", "식품 🍞"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: `수박 같이 사서 나누실 분!
+    어떻게 나눌지 같이 고민해봐요.`,
+    itemsTownLocation: "동네이웃2 성산 제2동",
+    itemsParticipants: "4/10",
+    itemsDeadline: "2022/07/07 일까지",
+  },
+  {
+    itemId: 2,
+    itemsTag: ["너무 많아요 🤝", "홈메이드 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃3 성산 제2동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+  },
+];
+
+const MainItems = ({
+  itemsTag,
+  itemsImg,
+  itemsHeadText,
+  itemsTownLocation,
+  itemsParticipants,
+  itemsDeadline,
+}) => {
+  const [onHeart, setOnHeart] = useState(false);
+
+  const onClickHeart = () => {
+    setOnHeart(!onHeart);
+  };
+  return (
+    <MainItemsContainer>
+      <div className="items_header">
+        <div className="items_tag_wrapper">
+          {itemsTag.map((tag, idx) => (
+            <div id={idx} className="items_tag">
+              {tag}
+            </div>
+          ))}
+        </div>
+        <img
+          className="items_detail"
+          src={process.env.PUBLIC_URL + "/assets/main/detail_bar.png"}
+          alt="items_detail_bar"
+        />
+      </div>
+      <div className="items_content_wrapper">
+        <div className="items_img_wrapper">
+          <img src={itemsImg} alt="items_img" />
+          <img
+            onClick={onClickHeart}
+            className="items_heart"
+            src={
+              onHeart
+                ? process.env.PUBLIC_URL + "/assets/main/heart.png"
+                : process.env.PUBLIC_URL + "/assets/main/empty_heart.svg"
+            }
+            alt="heart"
+          />
+        </div>
+        <div className="items_text_wrapper">
+          <h1>{itemsHeadText}</h1>
+          <p>{itemsTownLocation}</p>
+          <div className="items_footer">
+            <div className="items_participants">
+              <img
+                src={process.env.PUBLIC_URL + "/assets/main/participant.png"}
+                alt="items_participants"
+              />
+              <span>{itemsParticipants}</span>
+            </div>
+            <div className="items_deadline">{itemsDeadline}</div>
+          </div>
+        </div>
+      </div>
+    </MainItemsContainer>
+  );
+};
 const MenuTest = () => {
   return (
     <MainContaier>
@@ -79,7 +173,11 @@ const MenuTest = () => {
         <span>정렬</span>
       </SortBar>
 
-      <MainContent>MainContent</MainContent>
+      <MainContent>
+        {mainItemsData.map((data) => (
+          <MainItems id={data.itemId} {...data} />
+        ))}
+      </MainContent>
 
       <MainButton>
         <img
