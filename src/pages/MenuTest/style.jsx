@@ -45,11 +45,11 @@ export const FindTown = styled.div`
 
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 
-  .FindTown_selectBox_container {
+  /* .FindTown_selectBox_container {
     display: flex;
     align-items: center;
-  }
-  .FindTown_selectBox {
+  } */
+  /* .FindTown_selectBox {
     margin-left: 16px;
     margin-right: 14px;
     cursor: pointer;
@@ -58,7 +58,23 @@ export const FindTown = styled.div`
     width: 12px;
     height: 7.41px;
     cursor: pointer;
+  } */
+  .FindTown_selectBox {
+    margin-left: 16px;
+    margin-right: 14px;
   }
+  .react-select__control {
+    border: none;
+    box-shadow: none;
+  }
+
+  .react-select__indicators span {
+    width: 0;
+  }
+  .react-select__indicator {
+    color: #212121;
+  }
+
   .FindTown_search {
     width: 17.49px;
     height: 17.49px;

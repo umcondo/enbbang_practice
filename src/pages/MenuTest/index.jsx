@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRef } from "react";
+import Select from "react-select";
 import { useDraggable } from "react-use-draggable-scroll";
 
 import {
@@ -129,7 +130,19 @@ const MainItems = ({
     </MainItemsContainer>
   );
 };
+
+const options = [
+  { value: "성산 제1동", label: "성산 제1동" },
+  { value: "성산 제2동", label: "성산 제2동" },
+  { value: "성산 제3동", label: "성산 제3동" },
+  { value: "망원 제1동", label: "망원 제1동" },
+  { value: "망원 제2동", label: "망원 제2동" },
+  { value: "합정 제1동", label: "합정 제1동" },
+];
+
 const MenuTest = () => {
+  const [selectedOption, setSelectedOption] = useState(options[0]);
+
   return (
     <MainContaier>
       <Header>
@@ -142,11 +155,19 @@ const MenuTest = () => {
 
       <FindTown>
         <div className="FindTown_selectBox_container">
-          <span className="FindTown_selectBox">성산 제1동</span>
+          {/* <span className="FindTown_selectBox">성산 제1동</span>
           <img
             className="FindTown_selectBox_pointer"
             src={process.env.PUBLIC_URL + "/assets/main/select_pointer.png"}
             alt="pointer"
+          /> */}
+          <Select
+            classNamePrefix="react-select"
+            className="FindTown_selectBox"
+            defaultValue={selectedOption}
+            onChange={setSelectedOption}
+            options={options}
+            isSearchable={false}
           />
         </div>
         <div className="FindTown_search_container">
