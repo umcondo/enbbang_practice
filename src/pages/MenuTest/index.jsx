@@ -1,7 +1,10 @@
+import { useEffect } from "react";
+import { useCallback } from "react";
 import { useState } from "react";
 import { useRef } from "react";
 import Select from "react-select";
 import { useDraggable } from "react-use-draggable-scroll";
+import useSWR from "swr";
 
 import {
   FindTagContainer,
@@ -30,7 +33,7 @@ const FindTag = () => {
   return (
     <FindTagContainer ref={ref} {...events}>
       {tagData.map((data, idx) => (
-        <div id={idx} className="find_tag">
+        <div key={idx} className="find_tag">
           {data.text}
         </div>
       ))}
@@ -87,7 +90,7 @@ const MainItems = ({
       <div className="items_header">
         <div className="items_tag_wrapper">
           {itemsTag.map((tag, idx) => (
-            <div id={idx} className="items_tag">
+            <div key={idx} className="items_tag">
               {tag}
             </div>
           ))}
@@ -143,6 +146,36 @@ const options = [
 const MenuTest = () => {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
+  const { data: mainItemsDataSet, mutate } = useSWR(
+    "mainItemsData",
+    () => [
+      ...mainItemsData.filter((data) =>
+        data.itemsTownLocation.includes(selectedOption?.label)
+      ),
+    ]
+
+    // { dedupingInterval: 2000 }
+  );
+
+  useEffect(() => {
+    console.log(selectedOption?.label);
+    console.log({ mainItemsDataSet });
+  }, [selectedOption?.label, mainItemsDataSet]);
+
+  const onChangeTown = useCallback(
+    (e) => {
+      console.log("change!");
+      setSelectedOption(e);
+      mutate();
+    },
+    [setSelectedOption, mutate]
+  );
+
+  if (!mainItemsDataSet) {
+    return <div>데이터불러오는중</div>;
+  }
+
+  console.log("component!");
   return (
     <MainContaier>
       <Header>
@@ -155,17 +188,11 @@ const MenuTest = () => {
 
       <FindTown>
         <div className="FindTown_selectBox_container">
-          {/* <span className="FindTown_selectBox">성산 제1동</span>
-          <img
-            className="FindTown_selectBox_pointer"
-            src={process.env.PUBLIC_URL + "/assets/main/select_pointer.png"}
-            alt="pointer"
-          /> */}
           <Select
             classNamePrefix="react-select"
             className="FindTown_selectBox"
-            defaultValue={selectedOption}
-            onChange={setSelectedOption}
+            defaultValue={options[0]}
+            onChange={onChangeTown}
             options={options}
             isSearchable={false}
           />
@@ -195,8 +222,8 @@ const MenuTest = () => {
       </SortBar>
 
       <MainContent>
-        {mainItemsData.map((data) => (
-          <MainItems id={data.itemId} {...data} />
+        {mainItemsDataSet?.map((data) => (
+          <MainItems key={data.itemId} {...data} />
         ))}
       </MainContent>
 
