@@ -26,7 +26,7 @@ import {
   options,
 } from "../../utils/dummyData/mainPageData.js";
 
-const FindTag = ({ onClickTag }) => {
+export const FindTag = ({ onClickTag }) => {
   const ref = useRef();
   const { events } = useDraggable(ref);
 

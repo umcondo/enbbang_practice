@@ -13,20 +13,6 @@ export const FindTown = styled.div`
 
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 
-  /* .FindTown_selectBox_container {
-    display: flex;
-    align-items: center;
-  } */
-  /* .FindTown_selectBox {
-    margin-left: 16px;
-    margin-right: 14px;
-    cursor: pointer;
-  }
-  .FindTown_selectBox_pointer {
-    width: 12px;
-    height: 7.41px;
-    cursor: pointer;
-  } */
   .FindTown_selectBox {
     margin-left: 16px;
     margin-right: 14px;
@@ -59,13 +45,10 @@ export const FindTown = styled.div`
 
 export const FindTagContainer = styled.div`
   padding-left: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
   height: 60px;
-  margin-top: 10px;
   display: flex;
+  align-items: center;
   gap: 15px;
-  /* background-color: #ececec; */
 
   .find_tag {
     padding: 5px 10px;
@@ -76,6 +59,7 @@ export const FindTagContainer = styled.div`
     text-align: center;
     flex: none;
     cursor: pointer;
+    height: 35px;
   }
   // 스크롤 설정
   overflow-x: scroll;
@@ -314,7 +298,7 @@ export const MainContaier = styled.div`
   height: 800px;
   background: #ffffff;
   margin: auto;
-  margin-top: 70px;
+  margin-top: 30px;
   position: relative;
   border: 1px solid #ececec;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
