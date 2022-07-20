@@ -11,7 +11,6 @@ import {
   FindTagContainer,
   FindTown,
   Footer,
-  Header,
   MainButton,
   MainContaier,
   MainContent,
@@ -19,13 +18,13 @@ import {
   SortBar,
 } from "./style";
 
-const tagData = [
-  { text: "모두" },
-  { text: "같이 사요" },
-  { text: "너무 많아요" },
-  { text: "같이 나눠요" },
-  { text: "같이 주문해요" },
-];
+import Header from "../../components/Header";
+
+import {
+  mainItemsData,
+  tagData,
+  options,
+} from "../../utils/dummyData/mainPageData.js";
 
 const FindTag = ({ onClickTag }) => {
   const ref = useRef();
@@ -41,130 +40,6 @@ const FindTag = ({ onClickTag }) => {
     </FindTagContainer>
   );
 };
-
-const mainItemsData = [
-  {
-    itemId: 0,
-    itemsTag: ["같이 사요 🛍️", "배달비 🛵"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "마포구청역 근처 같이 치킨시켜 드실 분?",
-    itemsTownLocation: "동네이웃1 성산 제1동",
-    itemsParticipants: "1/3",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 1,
-    itemsTag: ["같이 사요 🛍️", "식품 🍞"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: `수박 같이 사서 나누실 분!
-    어떻게 나눌지 같이 고민해봐요.`,
-    itemsTownLocation: "동네이웃2 성산 제2동",
-    itemsParticipants: "4/10",
-    itemsDeadline: "2022/07/07 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 2,
-    itemsTag: ["너무 많아요 🤝", "홈메이드 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃3 성산 제2동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 3,
-    itemsTag: ["같이 나눠요 🤝", "홈메이드 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃4 성산 제2동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 4,
-    itemsTag: ["너무 많아요 🤝", "같이 나눠요 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃5 성산 제3동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 5,
-    itemsTag: ["같이 주문해요 🤝", "홈메이드 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃6 합정 제2동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 6,
-    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠", "같이 나눠요 🤝"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃7 성산 제1동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 7,
-    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃7 성산 제1동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 8,
-    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃7 성산 제1동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 9,
-    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃7 망원 제1동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 10,
-    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃7 망원 제1동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-  {
-    itemId: 11,
-    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
-    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
-    itemsHeadText: "집반찬 물물교환해요",
-    itemsTownLocation: "동네이웃7 망원 제1동",
-    itemsParticipants: "1/2",
-    itemsDeadline: "2022/06/30 일까지",
-    isHeartEmpty: false,
-  },
-];
 
 const MainItems = ({
   itemId,
@@ -227,15 +102,6 @@ const MainItems = ({
     </MainItemsContainer>
   );
 };
-
-const options = [
-  { value: "성산 제1동", label: "성산 제1동" },
-  { value: "성산 제2동", label: "성산 제2동" },
-  { value: "성산 제3동", label: "성산 제3동" },
-  { value: "망원 제1동", label: "망원 제1동" },
-  { value: "망원 제2동", label: "망원 제2동" },
-  { value: "합정 제1동", label: "합정 제1동" },
-];
 
 const MenuTest = () => {
   const [selectedOption, setSelectedOption] = useState(options[0]);
@@ -306,13 +172,7 @@ const MenuTest = () => {
   };
   return (
     <MainContaier>
-      <Header>
-        <div className="header_button">
-          <div className="square"></div>
-          <div className="circle"></div>
-          <div className="triangle-down"></div>
-        </div>
-      </Header>
+      <Header />
 
       <FindTown>
         <div className="FindTown_selectBox_container">
