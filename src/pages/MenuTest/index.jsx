@@ -2,9 +2,10 @@ import { useEffect } from "react";
 import { useCallback } from "react";
 import { useState } from "react";
 import { useRef } from "react";
+import Scrollbars from "react-custom-scrollbars-2";
+import { useNavigate } from "react-router";
 import Select from "react-select";
 import { useDraggable } from "react-use-draggable-scroll";
-import useSWR from "swr";
 
 import {
   FindTagContainer,
@@ -26,14 +27,14 @@ const tagData = [
   { text: "같이 주문해요" },
 ];
 
-const FindTag = () => {
+const FindTag = ({ onClickTag }) => {
   const ref = useRef();
   const { events } = useDraggable(ref);
 
   return (
     <FindTagContainer ref={ref} {...events}>
       {tagData.map((data, idx) => (
-        <div key={idx} className="find_tag">
+        <div key={idx} className="find_tag" onClick={onClickTag}>
           {data.text}
         </div>
       ))}
@@ -50,6 +51,7 @@ const mainItemsData = [
     itemsTownLocation: "동네이웃1 성산 제1동",
     itemsParticipants: "1/3",
     itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
   },
   {
     itemId: 1,
@@ -60,6 +62,7 @@ const mainItemsData = [
     itemsTownLocation: "동네이웃2 성산 제2동",
     itemsParticipants: "4/10",
     itemsDeadline: "2022/07/07 일까지",
+    isHeartEmpty: false,
   },
   {
     itemId: 2,
@@ -69,27 +72,118 @@ const mainItemsData = [
     itemsTownLocation: "동네이웃3 성산 제2동",
     itemsParticipants: "1/2",
     itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 3,
+    itemsTag: ["같이 나눠요 🤝", "홈메이드 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃4 성산 제2동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 4,
+    itemsTag: ["너무 많아요 🤝", "같이 나눠요 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃5 성산 제3동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 5,
+    itemsTag: ["같이 주문해요 🤝", "홈메이드 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃6 합정 제2동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 6,
+    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠", "같이 나눠요 🤝"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃7 성산 제1동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 7,
+    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃7 성산 제1동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 8,
+    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃7 성산 제1동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 9,
+    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃7 망원 제1동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 10,
+    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃7 망원 제1동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
+  },
+  {
+    itemId: 11,
+    itemsTag: ["너무 많아요 🤝", "같이 주문해요 🏠"],
+    itemsImg: process.env.PUBLIC_URL + "/assets/main/items_img.png",
+    itemsHeadText: "집반찬 물물교환해요",
+    itemsTownLocation: "동네이웃7 망원 제1동",
+    itemsParticipants: "1/2",
+    itemsDeadline: "2022/06/30 일까지",
+    isHeartEmpty: false,
   },
 ];
 
 const MainItems = ({
+  itemId,
   itemsTag,
   itemsImg,
   itemsHeadText,
   itemsTownLocation,
   itemsParticipants,
   itemsDeadline,
+  isHeartEmpty,
+  onClickHeart,
 }) => {
-  const [onHeart, setOnHeart] = useState(false);
-
-  const onClickHeart = () => {
-    setOnHeart(!onHeart);
-  };
+  const ref = useRef();
+  const { events } = useDraggable(ref);
   return (
     <MainItemsContainer>
       <div className="items_header">
-        <div className="items_tag_wrapper">
-          {itemsTag.map((tag, idx) => (
+        <div className="items_tag_wrapper" ref={ref} {...events}>
+          {itemsTag?.map((tag, idx) => (
             <div key={idx} className="items_tag">
               {tag}
             </div>
@@ -108,11 +202,11 @@ const MainItems = ({
             onClick={onClickHeart}
             className="items_heart"
             src={
-              onHeart
+              isHeartEmpty
                 ? process.env.PUBLIC_URL + "/assets/main/heart.png"
                 : process.env.PUBLIC_URL + "/assets/main/empty_heart.svg"
             }
-            alt="heart"
+            alt={itemId}
           />
         </div>
         <div className="items_text_wrapper">
@@ -146,36 +240,70 @@ const options = [
 const MenuTest = () => {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
-  const { data: mainItemsDataSet, mutate } = useSWR(
-    "mainItemsData",
-    () => [
+  const [maindata, setMaindata] = useState();
+
+  const onClickTag = useCallback(
+    (e) => {
+      const tag = e.target.textContent;
+
+      if (tag === "모두") {
+        setMaindata([
+          ...mainItemsData.filter((data) =>
+            data.itemsTownLocation.includes(selectedOption?.label)
+          ),
+        ]);
+      } else {
+        setMaindata([
+          ...mainItemsData
+            .filter((data) =>
+              data.itemsTownLocation.includes(selectedOption?.label)
+            )
+            .filter((data) => data.itemsTag.join("").includes(tag)),
+        ]);
+      }
+    },
+    [selectedOption?.label]
+  );
+
+  const onSortByLocation = useCallback(() => {
+    setMaindata([
       ...mainItemsData.filter((data) =>
         data.itemsTownLocation.includes(selectedOption?.label)
       ),
-    ]
-
-    // { dedupingInterval: 2000 }
-  );
+    ]);
+  }, [selectedOption?.label]);
 
   useEffect(() => {
-    console.log(selectedOption?.label);
-    console.log({ mainItemsDataSet });
-  }, [selectedOption?.label, mainItemsDataSet]);
+    onSortByLocation();
+  }, [onSortByLocation]);
 
   const onChangeTown = useCallback(
     (e) => {
-      console.log("change!");
       setSelectedOption(e);
-      mutate();
+      onSortByLocation();
     },
-    [setSelectedOption, mutate]
+    [setSelectedOption, onSortByLocation]
   );
 
-  if (!mainItemsDataSet) {
-    return <div>데이터불러오는중</div>;
-  }
+  const onClickHeart = (e) => {
+    const target = e.target.attributes.alt?.nodeValue * 1;
 
-  console.log("component!");
+    setMaindata((maindata) =>
+      maindata.map((data) =>
+        data.itemId === target
+          ? { ...data, isHeartEmpty: !data.isHeartEmpty }
+          : data
+      )
+    );
+  };
+
+  // const ref = useRef();
+  // const { events } = useDraggable(ref);
+
+  const navigate = useNavigate();
+  const onClickToCreatePage = () => {
+    navigate("/create");
+  };
   return (
     <MainContaier>
       <Header>
@@ -211,7 +339,7 @@ const MenuTest = () => {
         </div>
       </FindTown>
 
-      <FindTag />
+      <FindTag onClickTag={onClickTag} />
 
       <SortBar>
         <img
@@ -221,13 +349,21 @@ const MenuTest = () => {
         <span>정렬</span>
       </SortBar>
 
-      <MainContent>
-        {mainItemsDataSet?.map((data) => (
-          <MainItems key={data.itemId} {...data} />
+      {/* react-custom-scroll */}
+      <Scrollbars style={{ marginTop: "10px", height: "500px" }} autoHide>
+        {maindata?.map((data) => (
+          <MainItems key={data.itemId} {...data} onClickHeart={onClickHeart} />
         ))}
-      </MainContent>
+      </Scrollbars>
 
-      <MainButton>
+      {/* react-draggable */}
+      {/* <MainContent ref={ref} {...events}>
+        {maindata?.map((data) => (
+          <MainItems key={data.itemId} {...data} onClickHeart={onClickHeart} />
+        ))}
+      </MainContent> */}
+
+      <MainButton onClick={onClickToCreatePage}>
         <img
           src={process.env.PUBLIC_URL + "assets/main/pencil.png"}
           alt="pencil"

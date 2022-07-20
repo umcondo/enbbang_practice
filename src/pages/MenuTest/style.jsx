@@ -97,7 +97,7 @@ export const FindTagContainer = styled.div`
   margin-top: 10px;
   display: flex;
   gap: 15px;
-  background-color: #ececec;
+  /* background-color: #ececec; */
 
   .find_tag {
     padding: 5px 10px;
@@ -188,6 +188,17 @@ export const SortBar = styled.div`
 
 export const MainContent = styled.div`
   margin-top: 10px;
+  height: 500px;
+  overflow-y: scroll;
+
+  /* Hide scrollbar for IE and Edge */
+  & {
+    -ms-overflow-style: none;
+  }
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const MainItemsContainer = styled.div`
@@ -203,7 +214,21 @@ export const MainItemsContainer = styled.div`
     justify-content: space-between;
   }
   .items_header .items_tag_wrapper {
+    border-radius: 4px;
     display: flex;
+    overflow-x: scroll;
+
+    /* Hide scrollbar for IE and Edge */
+    & {
+      -ms-overflow-style: none;
+    }
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    div:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
   }
   .items_header .items_tag_wrapper .items_tag {
     display: flex;
@@ -213,6 +238,7 @@ export const MainItemsContainer = styled.div`
     background: #b3e5fc;
     border-radius: 4px;
     height: 22px;
+    flex: none;
 
     padding: 3px 9px 1px 8px;
 
@@ -225,6 +251,7 @@ export const MainItemsContainer = styled.div`
     height: 10.67px;
     width: 2.67px;
     cursor: pointer;
+    margin-left: 15px;
   }
 
   .items_content_wrapper {
